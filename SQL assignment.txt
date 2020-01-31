@@ -1,0 +1,148 @@
+SQL Assignment
+The data set of Austin is taken form the World Bank Public Database and the SQL queries are made on it. The queries are executed on Google Biquery Sandbox Platform.
+1)	Arrange in Ascending order the Station Id of Austin bikeshare. Pick the result of top 10 observations.
+Command: SELECT station_id
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_stations` 
+ORDER BY station_id ASC
+Result
+Row	station_id	
+1	1001	
+2	1002	
+3	1003	
+4	1004	
+5	1005	
+6	1006	
+7	1007	
+8	1008	
+9	2494	
+10	2495	
+
+
+2)	Select all the bike stations in Austin City such that the station id of bikeshare is greater than 100 and arrange them in descending order. 
+(show the result of 5 id’s only)
+Command: 
+SELECT station_id 
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_stations` limit5
+WHERE station_id >100
+ORDER BY station_id DESC
+
+Result:
+Row	station_id	
+1	4062	
+2	4061	
+3	4060	
+4	4059	
+5	4058	
+
+
+3)	What is the total number of stations with station ID Greater than 100?
+Command:
+SELECT COUNT (station_id )
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_stations` 
+WHERE station_id >100
+Result: 96. There are in total 96 numbers of stations in Austin with station id greater than 100.
+
+
+4)	Show in a table the variables named: case number, date and location, where show the crime cases of Austin that happened in Apartment, 
+and arrange the date in a manner that shows the latest occurrences first. Pick top 10 latest crime cases.
+Command:
+SELECT case_number, date,location_description
+FROM `bigquery-public-data.chicago_crime.crime`
+WHERE location_description = "APARTMENT" 
+GROUP BY case_number, date,location_description
+ORDER BY Date DESC
+Result:
+Row	case_number	date	location_description	
+1	JD130146	2020-01-22 23:30:00 UTC	APARTMENT	
+2	JD125839	2020-01-22 23:00:00 UTC	APARTMENT	
+3	JD125244	2020-01-22 22:50:00 UTC	APARTMENT	
+4	JD125254	2020-01-22 22:50:00 UTC	APARTMENT	
+5	JD128208	2020-01-22 22:30:00 UTC	APARTMENT	
+6	JD125281	2020-01-22 22:30:00 UTC	APARTMENT	
+7	JD125270	2020-01-22 22:12:00 UTC	APARTMENT	
+8	JD125233	2020-01-22 22:05:00 UTC	APARTMENT	
+9	JD125667	2020-01-22 21:30:00 UTC	APARTMENT	
+10	JD125181	2020-01-22 21:00:00 UTC	APARTMENT	
+
+
+5)	What is the Average duration (in minutes) travelled by the bikeshare trips?
+Command:
+SELECT AVG(duration_minutes)
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips`
+Result: Average duration travelled is 29.03 minutes.
+
+6)	What is the total duration (in minutes) travelled by bikes in Austin?
+Command:
+SELECT SUM(duration_minutes)
+FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips`
+Result: 35327453 minutes
+
+
+7)	Find out the case number of Chicago Crime in community 10.
+Command:
+ SELECT case_number
+FROM `bigquery-public-data.chicago_crime.crime` 
+WHERE community_area = 10
+Result:
+Row	case_number	
+1	JC389450	
+2	HZ403451	
+3	HZ554259	
+4	HH393084	
+5	HK768492	
+
+8)	Count the number of Crime in Austin through its unique id that has occurred between the year 2000 and 2017.
+Command: 
+SELECT COUNT(unique_key)
+FROM `bigquery-public-data.austin_crime.crime` 
+WHERE year BETWEEN 2000 AND 2017
+Result: 116674
+
+
+9)	Inner join the address and time of Austin incidents with Latitude .
+Command : 
+SELECT `bigquery-public-data.austin_incidents.incidents_2008`.address,`bigquery-public-data.austin_incidents.incidents_2009`.time 
+FROM `bigquery-public-data.austin_incidents.incidents_2008` INNER JOIN `bigquery-public-data.austin_incidents.incidents_2009`ON 
+`bigquery-public-data.austin_incidents.incidents_2008`.latitude = `bigquery-public-data.austin_incidents.incidents_2009`.latitude
+Result 
+
+Row	address	time	
+1	W 18TH ST / GUADALUPE ST	22:07:00	
+2	W 18TH ST / GUADALUPE ST	22:07:00	
+3	S L DAVIS AVE / POQUITO ST	20:42:00	
+4	S L DAVIS AVE / POQUITO ST	20:42:00	
+5	W 10TH ST / SAN ANTONIO ST	01:05:00	
+6	W 10TH ST / SAN ANTONIO ST	01:05:00
+
+	
+
+10)	Left join the date and time of Austin crime with latitude.
+Command:
+SELECT `bigquery-public-data.austin_incidents.incidents_2008`.date,`bigquery-public-data.austin_incidents.incidents_2009`.time 
+FROM `bigquery-public-data.austin_incidents.incidents_2008`
+ LEFT JOIN `bigquery-public-data.austin_incidents.incidents_2009`ON 
+`bigquery-public-data.austin_incidents.incidents_2008`.latitude = `bigquery-public-data.austin_incidents.incidents_2009`.latitude
+
+Result:
+30	2008-08-26	null	
+31	2008-12-09	null	
+32	2008-09-30	null	
+33	2008-07-29	19:00:00	
+34	2008-07-29	02:45:00	
+35	2008-07-29	08:30:00
+
+	
+11)	Right Join date and unique key with Address
+Command:
+SELECT `bigquery-public-data.austin_incidents.incidents_2008`.date,`bigquery-public-data.austin_incidents.incidents_2009`
+.unique_key FROM `bigquery-public-data.austin_incidents.incidents_2008` RIGHT JOIN `bigquery-public-data.austin_incidents.
+incidents_2009`ON `bigquery-public-data.austin_incidents.incidents_2008`.address = `bigquery-public-data.austin_incidents.incidents_2009`.address
+Result 
+1	2008-04-09	20092550103	
+2	2008-02-13	20092550103	
+3	2008-03-09	20092550103	
+4	2008-02-07	20092550103	
+5	2008-03-20	20092550103	
+
+
+
